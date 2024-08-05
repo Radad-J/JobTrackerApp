@@ -38,6 +38,7 @@ const createJob = async (req, res) => {
 const getJobs = async (req, res) => {
   try {
     const { page = 1, limit = 6, filterBy, orderBy = "asc" } = req.query;
+    console.log(page);
 
     // Initialize query
     let query = { user: req.user._id };
@@ -74,8 +75,6 @@ const getJobs = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
-module.exports = getJobs;
 
 const getJobById = async (req, res) => {
   try {

@@ -38,6 +38,16 @@ const registerUser = async (req, res) => {
     let cvUrl = "";
     let profilePictureUrl = "";
 
+    const user = await User.create({
+      firstname,
+      lastname,
+      email,
+      github,
+      password,
+      cv: cvUrl,
+      profilePicture: profilePictureUrl,
+    });
+
     if (req.files["cv"]) {
       const resultCV = await uploadToCloudinary(
         "auto",
@@ -56,15 +66,9 @@ const registerUser = async (req, res) => {
       profilePictureUrl = resultProfilePicture.secure_url;
     }
 
-    const user = await User.create({
-      firstname,
-      lastname,
-      email,
-      github,
-      password,
-      cv: cvUrl,
-      profilePicture: profilePictureUrl,
-    });
+    user.cv = cvUrl;
+    user.profilePicture = profilePictureUrl;
+    user.save();
 
     if (user) {
       res.status(201).json({
@@ -187,9 +191,9 @@ const updateProfile = async (req, res) => {
 const updateCv = async (req, res) => {
   const user = await User.findById(req.user._id);
   const url = user.cv;
-  try{
+  try {
     console.log(req.files);
-  } catch(err) {
+  } catch (err) {
     console.log(err);
   }
   //fetch the current link to find the id
@@ -201,18 +205,24 @@ const updateCv = async (req, res) => {
       console.log("Delete result:", result);
     }
 
-    if (req.files["cv"]) {
-      const resultCV = await uploadToCloudinary(
-        "auto",
-        "jobApplyTracker/cv",
-        req.files["cv"][0]["buffer"]
-      );
+    if (req.files) {
+      if (req.files["cv"]) {
+        const resultCV = await uploadToCloudinary(
+          "auto",
+          "jobApplyTracker/cv",
+          req.files["cv"][0]["buffer"]
+        );
 
-      user.cv = resultCV.secure_url;
-      const updatedUserCv = await User.updateOne({_id: req.user._id}, {$set: {cv: user.cv}});
-      res.status(200).json(updatedUserCv);
+        user.cv = resultCV.secure_url;
+        const updatedUserCv = await User.updateOne(
+          { _id: req.user._id },
+          { $set: { cv: user.cv } }
+        );
+        res.status(200).json(updatedUserCv);
+      }
     }
 
+    res.status(400).json({ ErrorFormat: "Not a file" });
   } catch (err) {
     console.log(err);
     if (err.message.includes("Missing required parameter")) {
@@ -233,9 +243,7 @@ const changePassword = async (req, res) => {
     user.password = req.body.password;
 
     const newPass = await user.save();
-    res
-      .status(200)
-      .json({ errors: [{ path: "general", message: "Password changed" }] });
+    res.status(200).json({ password: { message: "Password changed" } });
   } else {
     res.status(400).json({
       errors: [{ path: "general", message: "Password doesn't match" }],
