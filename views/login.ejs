@@ -1,0 +1,54 @@
+<%- include("./partials/header") %>
+
+<form id="login-form">
+  <label for="email">email</label>
+  <input type="text" name="email" required />
+  <label for="password">password</label>
+  <input type="text" name="password" />
+  <small id="login-error-msg"></small>
+  <button>Submit</button>
+</form>
+<button id="register-btn">Register</button>
+
+<script>
+  const loginForm = document.getElementById("login-form");
+  const errorMessage = document.getElementById("login-error-msg");
+
+  loginForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    errorMessage.innerText = "";
+    const email = loginForm.email.value;
+    const password = loginForm.password.value;
+    const data = {
+      email: email,
+      password: password,
+    };
+
+    fetch("/api/users/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+
+        if (data._id) {
+          window.location.href = `/dashboard`;
+        } else {
+          errorMessage.innerText = data["errors"][0]["message"];
+        }
+      });
+  });
+
+  const register = document.getElementById("register-btn");
+
+  register.addEventListener("click", () => {
+    window.location.href = "/register";
+  });
+</script>
+
+<%- include("./partials/footer") %>

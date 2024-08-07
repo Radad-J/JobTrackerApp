@@ -1,0 +1,105 @@
+<%- include("./partials/header") %>
+
+<form id="update-job-form">
+  <label for="title">title :</label>
+  <input type="text" name="title" id="title" value="<%= job.title %>" />
+  <small id="title-error"></small>
+  <br />
+  <label for="website">website :</label>
+  <input type="text" name="website" id="website" value="<%= job.website %>" />
+  <small id="website-error"></small>
+  <br />
+  <label for="contactName">contactName</label>
+  <input
+    type="text"
+    name="contactName"
+    id="contactName"
+    value="<%= job.contactName %>"
+  />
+  <small id="contactName-error"></small>
+  <br />
+  <label for="contactEmail">contactEmail: </label>
+  <input
+    type="text"
+    name="contactEmail"
+    id="contactEmail"
+    value="<%= job.contactEmail %>"
+  />
+  <small id="contactEmail-error"></small>
+  <br />
+  <label for="contactPhone">contactPhone: </label>
+  <input
+    type="text"
+    name="contactPhone"
+    id="contactPhone"
+    value="<%= job.contactPhone %>"
+  />
+  <small id="contactPhone-error"></small>
+  <br />
+  <label for="address">address: </label>
+  <input type="text" name="address" id="address" value="<%= job.address %>" />
+  <small id="address-error"></small>
+  <br />
+  <label for="origin">origin: </label>
+  <select name="origin" id="origin">
+    <option value="Candidature spontanée"<%= job.origin === "Candidature spontanée" ? "selected" : "" %>>Candidature spontanée</option>
+    <option value="Job offer" <%= job.origin === "Job offer" ? "selected" : "" %>>Job offer</option>
+  </select>
+  <small id="origin-error"></small>
+  <br />
+  <label for="status">status: </label>
+  <select name="status" id="status">
+    <option value="Interested"  <%= job.status === "Interested" ? "selected" : "" %>>Interested</option>
+    <option value="CV sent" <%= job.status === "CV sent" ? "selected" : "" %>>CV sent</option>
+    <option value="Interview" <%= job.status === "Interview" ? "selected" : "" %>>Interview</option>
+    <option value="Negative" <%= job.status === "Negative" ? "selected" : "" %>>Negative</option>
+  </select>
+  <small id="status-error"></small>
+  <br />
+  <label for="comments">comments : </label>
+  <textarea name="comments" id="comments">
+    <%= job.comments %>
+  </textarea>
+  <small id="comments-error"></small>
+
+  <input type="submit" value="Update" />
+</form>
+
+
+<script>
+    const updateJobForm = document.getElementById("update-job-form")
+    let jobId = window.location.href.split("/").at(-1);
+
+    updateJobForm.addEventListener("submit", async (e) => {
+        e.preventDefault()
+    const formData = new FormData(updateJobForm);
+    const formValues = {};
+
+    formData.forEach((value, key) => {
+      formValues[key] = value;
+    });
+
+    // clean les erreurs
+    document.querySelectorAll("small").forEach((element) => {
+      element.innerText = "";
+    });
+    let response = await fetch(`/api/jobs/${jobId}`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formValues)
+    })
+    response = await response.json();
+    if (response._id) {   
+      window.location.href = "/dashboard";
+    } else {
+      response["errors"].forEach((error) => {
+        document.getElementById(`${error["path"]}-error`).innerText =
+          error["message"];
+        });
+    }
+})
+
+</script>
+<%- include("./partials/footer") %>

@@ -15,7 +15,12 @@ const userSchema = new mongoose.Schema(
     },
     github: {
       type: String,
-      validate: [validator.isURL, "Please enter a valid URL"],
+      validate: {
+        validator: (v) => {
+          return v === "" || validator.isURL(v);
+        },
+        message: (props) => "Please enter a valid URL",
+      },
     },
     profilePicture: { type: String },
     cv: { type: String },
@@ -23,7 +28,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       minlength: [6, "Password must be at least 6 characters long."],
-      maxlength: [10, "Password must be at most 10 characters long."],
+      // maxlength: [10, "Password must be at most 10 characters long."],
     },
   },
   {

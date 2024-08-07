@@ -1,0 +1,93 @@
+<%- include("./partials/header") %>
+
+<form id="add-job-form">
+  <label for="title">title :</label>
+  <input type="text" name="title" id="title" />
+  <small id="title-error"></small>
+  <br />
+  <label for="website">website :</label>
+  <input type="text" name="website" id="website" />
+  <small id="website-error"></small>
+  <br />
+  <label for="contactName">contactName</label>
+  <input type="text" name="contactName" id="contactName" />
+  <small id="contactName-error"></small>
+  <br />
+  <label for="contactEmail">contactEmail: </label>
+  <input type="text" name="contactEmail" id="contactEmail" />
+  <small id="contactEmail-error"></small>
+  <br />
+  <label for="contactPhone">contactPhone: </label>
+  <input type="text" name="contactPhone" id="contactPhone" />
+  <small id="contactPhone-error"></small>
+  <br />
+  <label for="address">address: </label>
+  <input type="text" name="address" id="address" />
+  <small id="address-error"></small>
+  <br />
+  <label for="origin">origin: </label>
+  <!-- <input type="text" name="origin" id="origin" /> -->
+  <select name="origin" id="origin">
+    <option value="Candidature spontanée">Candidature spontanée</option>
+    <option value="Job offer">Job offer</option>
+  </select>
+  <small id="origin-error"></small>
+  <br />
+  <label for="status">status: </label>
+  <!-- <input type="text" name="status" id="status" /> -->
+  <select name="status" id="status">
+    <option value="Interested">Interested</option>
+    <option value="CV sent">CV sent</option>
+    <option value="Interview">Interview</option>
+    <option value="Negative">Negative</option>
+  </select>
+  <small id="status-error"></small>
+  <br />
+  <label for="comments">comments : </label>
+  <textarea name="comments" id="comments"></textarea>
+  <small id="comments-error"></small>
+
+  <input type="submit" value="Submit" />
+</form>
+
+<script>
+  const addJobForm = document.getElementById("add-job-form");
+
+  addJobForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const formData = new FormData(addJobForm);
+    const formValues = {};
+
+    formData.forEach((value, key) => {
+      formValues[key] = value;
+    });
+
+    // clean les erreurs
+    document.querySelectorAll("small").forEach((element) => {
+      element.innerText = "";
+    });
+
+    console.log(formValues);
+
+    let response = await fetch("/api/jobs", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formValues),
+    });
+
+    response = await response.json();
+    if (response._id) {
+      console.log(response);
+      window.location.href = "/dashboard";
+    } else {
+      response["errors"].forEach((error) => {
+        document.getElementById(`${error["path"]}-error`).innerText =
+          error["message"];
+      });
+    }
+  });
+</script>
+
+<%- include("./partials/footer") %>

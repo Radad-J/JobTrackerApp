@@ -1,0 +1,34 @@
+<%- include("./partials/header") %>
+
+<p id="firstname"></p>
+<p id="lastname"></p>
+<p id="email"></p>
+<p id="github"></p>
+<p id="profilePicture"></p>
+<p id="cv"></p>
+
+<button id="update-profile-btn">Update</button>
+
+<script>
+  const getProfile = async () => {
+    let response = await fetch("/api/users/profile");
+    response = await response.json();
+
+    if (response._id) {
+      let user = response;
+      Object.keys(user)
+        .slice(1)
+        .forEach((key) => {
+          document.getElementById(key).innerText = user[key];
+        });
+    }
+  };
+  getProfile();
+
+  const updateProfileBtn = document.getElementById("update-profile-btn");
+  updateProfileBtn.addEventListener("click", () => {
+    window.location.href = "/updateProfile";
+  });
+</script>
+
+<%- include("./partials/footer") %>

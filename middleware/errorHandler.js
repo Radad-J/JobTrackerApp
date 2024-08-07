@@ -8,9 +8,6 @@
 };*/
 const errorHandler = (err) => {
   let errors = [];
-  // if (err) {
-  //   console.log(err);
-  // }
 
   // Duplicate key error (e.g., unique constraint)
   if (err.code === 11000) {

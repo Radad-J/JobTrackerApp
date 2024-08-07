@@ -71,6 +71,15 @@ const registerUser = async (req, res) => {
     user.save();
 
     if (user) {
+      const token = generateToken(user._id);
+
+      // Set the token in an HTTP-only cookie only if the login is successful
+      res.cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production", // Use secure cookies in production
+        maxAge: 36000000, // 1 hour in milliseconds
+      });
+
       res.status(201).json({
         _id: user._id,
         firstname: user.firstname,
@@ -117,7 +126,7 @@ const loginUser = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production", // Use secure cookies in production
-      maxAge: 3600000, // 1 hour in milliseconds
+      maxAge: 36000000, // 1 hour in milliseconds
     });
 
     res.json({

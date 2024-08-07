@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <header>
+    <div id="username"></div>
+    <nav>
+      <li id="view-profile-btn">Profile</li>
+    </nav>
+  </header>
+  <body>
+    <script>
+      const profileBtn = document.getElementById("view-profile-btn");
+      const usernameBox = document.getElementById("username");
+
+      const getUser = async () => {
+        let response = await fetch("/api/users/profile");
+        response = await response.json();
+        if (response._id) {
+          usernameBox.innerHTML = `<p>${response.firstname} ${response.lastname}</p>`;
+        } else {
+          usernameBox.innerHTML = "";
+        }
+      };
+      getUser();
+
+      //Remove the btn when you're on the profile
+      let url = window.location.href.split("/").at(-1);
+      if (url == "profile") {
+        profileBtn.style.display = "none";
+      }
+
+      profileBtn.addEventListener("click", (e) => {
+        window.location.href = "/profile";
+      });
+    </script>
+  </body>
+</html>

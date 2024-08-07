@@ -1,0 +1,78 @@
+<%- include("./partials/header") %>
+
+<form id="register-form">
+  <label for="firstname">firstname</label>
+  <input type="text" name="firstname" />
+  <small id="firstname-error"></small>
+  <br />
+  <label for="lastname">lastname</label>
+  <input type="text" name="lastname" />
+  <small id="lastname-error"></small>
+  <br />
+  <label for="email">email</label>
+  <input type="text" name="email" />
+  <small id="email-error"></small>
+  <br />
+  <label for="github">github</label>
+  <input type="text" name="github" />
+  <small id="github-error"></small>
+  <br />
+  <label for="password">password</label>
+  <input type="text" name="password" />
+  <small id="password-error"></small>
+  <br />
+  <label for="confirmPassword">confirmPassword</label>
+  <input type="text" name="confirmPassword" />
+  <small id="confirmPassword-error"></small>
+  <br />
+  <label for="cv">CV</label>
+  <input type="file" name="cv" />
+  <small id="cv-error"></small>
+  <br />
+  <label for="profilePicture">profilePicture</label>
+  <input type="file" name="profilePicture" />
+  <small id="profilePicture-error"></small>
+  <br />
+  <input type="submit" value="Submit" />
+</form>
+
+<script>
+  const registerForm = document.getElementById("register-form");
+
+  registerForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const formData = new FormData(registerForm);
+
+    document.querySelectorAll("small").forEach((element) => {
+      element.innerText = "";
+    });
+
+    try {
+      let response = await fetch("/api/users/register", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await response.json();
+      console.log(data);
+
+      if (data._id) {
+        window.location.href = "/dashboard";
+      } else {
+        data["errors"].forEach((error) => {
+          console.log(error);
+
+          // le message d'erreur du password required est celui-ci : Path `password` is required.
+          // Le mieux serait de voir dans le backend cmt est gérée cette erreur
+          document.getElementById(`${error["path"]}-error`).innerText = error[
+            "message"
+          ].startsWith("Path")
+            ? error["message"].replace("Path", "")
+            : error["message"];
+        });
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  });
+</script>
+<%- include("./partials/footer") %>

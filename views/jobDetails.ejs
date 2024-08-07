@@ -1,0 +1,25 @@
+<%- include("./partials/header") %>
+
+<p><%= job.title %></p>
+<p><%= job.website %></p>
+<p><%= job.contactName %></p>
+<p><%= job.contactEmail %></p>
+<p><%= job.contactPhone %></p>
+<p><%= job.origin %></p>
+<p><%= job.status %></p>
+<p><%= job.comments %></p>
+<p><%= job.createdAt %></p>
+
+<br />
+<button id="update-job-btn">Update</button>
+
+<script>
+  const updateJobBtn = document.getElementById("update-job-btn");
+
+  updateJobBtn.addEventListener("click", (e) => {
+    let jobId = window.location.href.split("/").at(-1);
+    window.location.href = `/updateJob/${jobId}`;
+  });
+</script>
+
+<%- include("./partials/footer") %>

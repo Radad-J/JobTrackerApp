@@ -1,0 +1,124 @@
+<%- include("./partials/header") %>
+
+<form id="get-jobs">
+  <label for="filterBy-status">Filter by</label>
+  <select name="filterBySelection" id="filterBySelection">
+    <option value="All">All</option>
+    <option value="Interested">Interested</option>
+    <option value="CV sent">CV sent</option>
+    <option value="Interview">Interview</option>
+    <option value="Negative">Negative</option>
+  </select>
+  <label for="orderBy">Order by</label>
+  <select name="orderBy" id="orderBy">
+    <option value="asc">ASC</option>
+    <option value="desc">DESC</option>
+  </select>
+  <button>Submit</button>
+</form>
+
+<div class="btn">
+  <button id="add-job-btn">Add job</button>
+</div>
+
+<div class="pagination">
+  <p>
+    <span id="minus-one-page">-</span> <span id="num-page"></span>/<span
+      id="total-pages"
+    ></span>
+    <span id="plus-one-page">+</span>
+  </p>
+</div>
+<div id="box-jobs-card"></div>
+
+<script>
+  const jobsBox = document.getElementById("box-jobs-card");
+  const numPage = document.getElementById("num-page");
+  const totalPages = document.getElementById("total-pages");
+  const getJobsForm = document.getElementById("get-jobs");
+  const minusOne = document.getElementById("minus-one-page");
+  const plusOne = document.getElementById("plus-one-page");
+  const addJobBtn = document.getElementById("add-job-btn");
+
+  addJobBtn.addEventListener("click", (e) => {
+    window.location.href = "/addJob";
+  });
+
+  // get arguments for pagination
+  let limitPerpage = 10;
+  let pagesLimit = 1;
+  let currentPage = 1;
+  let otherArguments = [];
+
+  const getDashboard = async (
+    page = 1,
+    limit = limitPerpage,
+    filterBy = "createdAt",
+    filterValue = "",
+    orderBy = "asc"
+  ) => {
+    let jobs = await fetch(
+      `/api/jobs/dashboard?page=${page}&limit=${limit}&filterBy=${filterBy}&filterValue=${filterValue}&orderBy=${orderBy}`
+    );
+    jobs = await jobs.json();
+
+    numPage.innerText = jobs.currentPage;
+    totalPages.innerText = jobs.totalPages;
+
+    // get the value of total pages for pagination
+    pagesLimit = jobs.totalPages;
+
+    jobsBox.innerHTML = "";
+    jobs.jobs.forEach((job) => {
+      const card = document.createElement("div");
+      card.classList.add("job-card");
+      card.innerHTML = `
+        <h2>${job.title}</h2>
+        <p>${job.website}</p>
+        <p>${job.status}</p>
+      `;
+
+      card.addEventListener("click", (e) => {
+        window.location.href = `/jobDetails/${job._id}`;
+      });
+
+      jobsBox.appendChild(card);
+    });
+  };
+
+  getJobsForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    let filterValue = getJobsForm.filterBySelection.value;
+    let orderBy = getJobsForm.orderBy.value;
+    let filterBy;
+
+    if (filterValue == "All") {
+      filterValue = "";
+      filterBy = "createdAt";
+    } else {
+      filterBy = "status";
+    }
+
+    otherArguments = [];
+    otherArguments.push(filterBy, filterValue, orderBy);
+    await getDashboard(1, limitPerpage, filterBy, filterValue, orderBy);
+  });
+
+  minusOne.addEventListener("click", async () => {
+    if (currentPage > 1) {
+      currentPage -= 1;
+      await getDashboard(currentPage, limitPerpage, [...otherArguments]);
+    }
+  });
+
+  plusOne.addEventListener("click", async () => {
+    if (currentPage < pagesLimit) {
+      currentPage += 1;
+      await getDashboard(currentPage, limitPerpage, [...otherArguments]);
+    }
+  });
+
+  getDashboard();
+</script>
+
+<%- include("./partials/footer") %>
