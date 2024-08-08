@@ -4,37 +4,61 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
 
   <header>
-    <div id="username"></div>
-    <nav>
-      <li id="view-profile-btn">Profile</li>
-    </nav>
+    <div class="header-container">
+      <div class="logo">
+        <img src="./img/logo.png" />
+      </div>
+
+      <button id="dashboard-btn" class="btn">Dashboard</button>
+      <button id="logout-btn" class="btn">Logout</button>
+
+      <div class="user-profile" id="userProfile"></div>
+    </div>
   </header>
   <body>
     <script>
-      const profileBtn = document.getElementById("view-profile-btn");
-      const usernameBox = document.getElementById("username");
+      const usernameBox = document.getElementById("userProfile");
+      const dashboardBtn = document.getElementById("dashboard-btn");
 
       const getUser = async () => {
         let response = await fetch("/api/users/profile");
         response = await response.json();
         if (response._id) {
           usernameBox.innerHTML = `<p>${response.firstname} ${response.lastname}</p>`;
+          if (response.profilePicture) {
+            usernameBox.innerHTML += `<div class="profilePictureBox"><img src="${response.profilePicture}"></div> `;
+          }
         } else {
           usernameBox.innerHTML = "";
         }
       };
       getUser();
 
-      //Remove the btn when you're on the profile
+      const logoutBtn = document.getElementById("logout-btn");
+      logoutBtn.addEventListener("click", async (e) => {
+        const response = await fetch("/api/users/logout", { method: "POST" });
+        window.location.href = "/login";
+      });
+
+      //Remove the btn for dashboard when you're on the profile
       let url = window.location.href.split("/").at(-1);
-      if (url == "profile") {
-        profileBtn.style.display = "none";
+      if (url == "dashboard") {
+        dashboardBtn.style.display = "none";
+      }
+      if (url == "login") {
+        dashboardBtn.style.display = "none";
+        logoutBtn.style.display = "none";
       }
 
-      profileBtn.addEventListener("click", (e) => {
+      dashboardBtn.addEventListener("click", (e) => {
+        window.location.href = "/dashboard";
+      });
+
+      usernameBox.addEventListener("click", (e) => {
         window.location.href = "/profile";
       });
     </script>

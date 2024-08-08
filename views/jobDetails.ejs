@@ -12,6 +12,8 @@
 
 <br />
 <button id="update-job-btn">Update</button>
+<br />
+<button id="delete-job-btn">Delete</button>
 
 <script>
   const updateJobBtn = document.getElementById("update-job-btn");
@@ -19,6 +21,21 @@
   updateJobBtn.addEventListener("click", (e) => {
     let jobId = window.location.href.split("/").at(-1);
     window.location.href = `/updateJob/${jobId}`;
+  });
+
+  const deleteJobBtn = document.getElementById("delete-job-btn");
+
+  deleteJobBtn.addEventListener("click", async (e) => {
+    let jobId = window.location.href.split("/").at(-1);
+    fetch(`/api/jobs/${jobId}`, {
+      method: "DELETE",
+    })
+      .then((response) => {
+        window.location.href = "/dashboard";
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   });
 </script>
 

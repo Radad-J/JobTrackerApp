@@ -4,12 +4,14 @@
 <p id="lastname"></p>
 <p id="email"></p>
 <p id="github"></p>
-<p id="profilePicture"></p>
-<p id="cv"></p>
+<!-- <p id="profilePicture"></p> -->
+<!-- <p id="cv"></p> -->
+<div id="downloadCV"></div>
 
 <button id="update-profile-btn">Update</button>
 
 <script>
+  const downloadCVContainer = document.getElementById("downloadCV");
   const getProfile = async () => {
     let response = await fetch("/api/users/profile");
     response = await response.json();
@@ -17,10 +19,15 @@
     if (response._id) {
       let user = response;
       Object.keys(user)
-        .slice(1)
+        .slice(1, 5)
         .forEach((key) => {
           document.getElementById(key).innerText = user[key];
         });
+
+      if (user.cv) {
+        let urlParts = user.cv.split("/upload/");
+        downloadCVContainer.innerHTML = `<a href= ${urlParts[0]}/upload/fl_attachment/${urlParts[1]} download='cv.pdf'>Download CV</a>`;
+      }
     }
   };
   getProfile();

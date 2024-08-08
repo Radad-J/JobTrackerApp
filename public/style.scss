@@ -1,0 +1,13 @@
+@import "./sass/color";
+@import "./sass/mixins";
+@import "./sass/reset";
+
+@import url("https://fonts.googleapis.com/css2?family=BenchNine:wght@300;400;700&family=Big+Shoulders+Display:wght@100..900&display=swap");
+
+@import "./sass/header.scss";
+
+body {
+  background-color: $beige-light;
+  font-family: "BigShouldersDisplay";
+  color: $ivory;
+}

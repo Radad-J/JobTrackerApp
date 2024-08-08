@@ -1,5 +1,6 @@
 const Job = require("../models/Job");
 const { errorHandler } = require("../middleware/errorHandler");
+const { Mongoose } = require("mongoose");
 
 const createJob = async (req, res) => {
   const {
@@ -121,4 +122,15 @@ const updateJob = async (req, res) => {
   }
 };
 
-module.exports = { createJob, getJobs, getJobById, updateJob };
+const deleteJob = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const result = await Job.deleteOne({ _id: id });
+    res.json(result);
+  } catch (err) {
+    console.log(err);
+    res.status(400).json(err);
+  }
+};
+
+module.exports = { createJob, getJobs, getJobById, updateJob, deleteJob };
