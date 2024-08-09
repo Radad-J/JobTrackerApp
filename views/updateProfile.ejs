@@ -1,48 +1,60 @@
 <%- include("./partials/header") %>
 
-<form id="update-info-profile">
-  <label for="firstname">firstname</label>
-  <input type="text" name="firstname" id="firstname" />
-  <small id="firstname-error"></small>
-  <br />
-  <label for="lastname">lastname</label>
-  <input type="text" name="lastname" id="lastname" />
-  <small id="lastname-error"></small>
-  <br />
-  <label for="email">email</label>
-  <input type="text" name="email" id="email" />
-  <small id="email-error"></small>
-  <br />
-  <label for="github">github</label>
-  <input type="text" name="github" id="github" />
-  <small id="github-error"></small>
-  <br />
-  <input type="submit" value="Submit" />
-</form>
+<div class="update-profile-box">
+  <form id="update-info-profile" class="form">
+    <div class="part-form">
+      <label for="firstname">Firstname</label>
+      <input type="text" name="firstname" id="firstname" />
+      <small id="firstname-error"></small>
+    </div>
+    <div class="part-form">
+      <label for="lastname">Lastname</label>
+      <input type="text" name="lastname" id="lastname" />
+      <small id="lastname-error"></small>
+    </div>
+    <div class="part-form">
+      <label for="email">Email</label>
+      <input type="text" name="email" id="email" />
+      <small id="email-error"></small>
+    </div>
+    <div class="part-form">
+      <label for="github">Github</label>
+      <input type="text" name="github" id="github" />
+      <small id="github-error"></small>
+    </div>
 
-<form id="change-password-form">
-  <label for="password">password</label>
-  <input type="text" name="password" value="" />
-  <br />
-  <label for="confPassword">confirmPassword</label>
-  <input type="text" name="confPassword" value="" />
-  <small id="password-message"></small>
-  <input type="submit" value="Renew password" />
-</form>
+    <button>Submit</button>
+  </form>
 
-<form id="update-new-cv-form">
-  <label for="cv">CV</label>
-  <input type="file" name="cv" />
-  <small id="cv-msg"></small>
-  <input type="submit" value="send" />
-</form>
+  <div class="second-box">
+    <form id="change-password-form" class="form">
+      <div class="part-form">
+        <label for="password">Password</label>
+        <input type="password" name="password" value="" />
+      </div>
+      <div class="part-form">
+        <label for="confPassword">Confirm password</label>
+        <input type="password" name="confPassword" value="" />
+        <small id="password-message"></small>
+      </div>
+      <button>Submit</button>
+    </form>
 
-<form id="update-profile-picture-form">
-  <label for="profilePicture">Profile picture</label>
-  <input type="file" name="profilePicture" />
-  <small id="profilePicture-msg"></small>
-  <input type="submit" value="send" />
-</form>
+    <form id="update-new-cv-form" class="form-update-file">
+      <label for="cv">CV</label>
+      <input type="file" name="cv" />
+      <small id="cv-msg"></small>
+      <button>Send</button>
+    </form>
+
+    <form id="update-profile-picture-form" class="form-update-file">
+      <label for="profilePicture">Profile picture</label>
+      <input type="file" name="profilePicture" />
+      <small id="profilePicture-msg"></small>
+      <button>Send</button>
+    </form>
+  </div>
+</div>
 
 <script>
   const getInfoUser = async () => {

@@ -1,0 +1,67 @@
+@import "./color";
+@import "./mixins";
+@import "./reset";
+@import url("https://fonts.googleapis.com/css2?family=BenchNine:wght@300;400;700&family=Big+Shoulders+Display:wght@100..900&display=swap");
+
+header {
+  background-color: $sage-green;
+  padding: 35px;
+  position: relative;
+
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .logo {
+      max-width: 125px;
+      cursor: pointer;
+    }
+
+    .user-profile {
+      position: absolute;
+      right: 15px;
+
+      padding: 20px;
+      border-radius: 25px;
+
+      background-color: $forest-green;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      cursor: pointer;
+
+      p {
+        font-size: 25px;
+        font-weight: 700;
+        font-family: "Big+Shoulders+Display";
+        color: $ivory;
+      }
+
+      .profilePictureBox {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        overflow: hidden;
+      }
+    }
+  }
+}
+
+footer {
+  min-height: 150px;
+  padding: 50px;
+  background-color: $sage-green;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  button {
+    padding: 15px;
+    background-color: $slate-green;
+    border: 2px solid $ivory;
+    border-radius: 15px;
+    font-weight: 600;
+  }
+}

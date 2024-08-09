@@ -1,4 +1,6 @@
 @import "./color";
+@import url("https://fonts.googleapis.com/css2?family=BenchNine:wght@300;400;700&family=Big+Shoulders+Display:wght@100..900&display=swap");
+@import "./mixins";
 
 *,
 *::after,
@@ -16,11 +18,33 @@ li {
 a {
   text-decoration: none;
   cursor: pointer;
+  color: inherit;
+}
+
+a:hover {
+  text-decoration: none;
+  color: inherit;
+}
+
+a:focus {
+  outline: none;
+}
+
+a:visited {
+  color: inherit;
 }
 
 input {
   border: 1px solid $sage-green;
+  border-radius: 5px;
   outline: none;
+  max-width: 100%;
+  padding-left: 5px;
+  font-family: "BenchNine";
+  color: $slate-green;
+  font-size: larger;
+  font-weight: 500;
+  background-color: $ivory;
 }
 
 input:focus {
@@ -42,12 +66,31 @@ img {
   height: 100%;
 }
 
-// img {
-//   max-width: 100%;
-//   max-height: 100%;
-//   width: auto;
-//   height: auto;
-//   display: block;
-//   margin-left: auto;
-//   margin-right: auto;
-// }
+select {
+  border: 1px solid $slate-green;
+  border-radius: 4px;
+  padding: 5px;
+  background-color: $ivory;
+  color: $slate-green;
+  font-size: 16px;
+  cursor: pointer;
+
+  /* Style de l'option sélectionnée */
+  &:focus {
+    outline: none;
+  }
+}
+
+textarea {
+  border: 1px solid $slate-green;
+  border-radius: 4px;
+  padding: 5px;
+  background-color: $ivory;
+  color: $slate-green;
+  font-size: 16px;
+
+  overflow: hidden;
+  &:focus {
+    outline: none;
+  }
+}

@@ -1,0 +1,123 @@
+@import url("https://fonts.googleapis.com/css2?family=BenchNine:wght@300;400;700&family=Big+Shoulders+Display:wght@100..900&display=swap");
+
+.get-job-form {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 25px;
+  padding: 25px;
+  padding-right: 70px;
+  border-radius: 25px;
+  border: 3px solid $charcoal-gray;
+  background-color: $forest-green;
+  color: $beige-light;
+  font-weight: 600;
+
+  position: relative;
+
+  button {
+    position: absolute;
+    right: 0;
+    transform: translateX(50%);
+
+    font-size: 15;
+    color: $ivory;
+    padding: 15px;
+    font-weight: 600;
+    // border: 2px solid $navy-blue;
+    border-radius: 15px;
+    background-color: $slate-green;
+  }
+}
+
+#add-job-btn {
+  font-size: 15;
+  color: $ivory;
+  padding: 15px;
+  font-weight: 600;
+  border-radius: 15px;
+  background-color: $slate-green;
+  margin-bottom: 50px;
+}
+
+.box-job-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+
+  .pagination {
+    font-size: 25px;
+    font-weight: 600;
+    color: $charcoal-gray;
+
+    .clickable {
+      cursor: pointer;
+    }
+  }
+
+  .box-jobs-card {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+
+    .job-card {
+      position: relative;
+      border: 2px solid $forest-green;
+      min-width: 200px;
+
+      cursor: pointer;
+      color: $charcoal-gray;
+      background-color: $ivory;
+      padding: 25px;
+      padding-top: 40px;
+      border-radius: 25px;
+
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+
+      h2 {
+        font-size: 20px;
+        margin-bottom: 15px;
+      }
+      p {
+        margin-bottom: 10px;
+      }
+
+      .website {
+        color: $navy-blue;
+        text-decoration: underline;
+      }
+
+      .date {
+        align-self: center;
+        font-weight: 700;
+      }
+
+      .status {
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform: translate(-30%, -50%);
+        padding: 15px;
+        border-radius: 15px;
+        color: $ivory;
+      }
+      .Interested {
+        background-color: $forest-green;
+      }
+      .CV {
+        background-color: $navy-blue;
+      }
+      .Interview {
+        background-color: $dusty-rose;
+      }
+      .Negative {
+        background-color: $dark-red;
+      }
+    }
+  }
+}

@@ -1,39 +1,52 @@
 <%- include("./partials/header") %>
 
-<form id="register-form">
-  <label for="firstname">firstname</label>
-  <input type="text" name="firstname" />
-  <small id="firstname-error"></small>
-  <br />
-  <label for="lastname">lastname</label>
-  <input type="text" name="lastname" />
-  <small id="lastname-error"></small>
-  <br />
-  <label for="email">email</label>
-  <input type="text" name="email" />
-  <small id="email-error"></small>
-  <br />
-  <label for="github">github</label>
-  <input type="text" name="github" />
-  <small id="github-error"></small>
-  <br />
-  <label for="password">password</label>
-  <input type="text" name="password" />
-  <small id="password-error"></small>
-  <br />
-  <label for="confirmPassword">confirmPassword</label>
-  <input type="text" name="confirmPassword" />
-  <small id="confirmPassword-error"></small>
-  <br />
-  <label for="cv">CV</label>
-  <input type="file" name="cv" />
-  <small id="cv-error"></small>
-  <br />
-  <label for="profilePicture">profilePicture</label>
-  <input type="file" name="profilePicture" />
-  <small id="profilePicture-error"></small>
-  <br />
-  <input type="submit" value="Submit" />
+<form id="register-form" class="form">
+  <div class="part-form">
+    <label for="firstname">Firstname</label>
+    <input type="text" name="firstname" />
+    <small id="firstname-error"></small>
+  </div>
+  <div class="part-form">
+    <label for="lastname">Lastname</label>
+    <input type="text" name="lastname" />
+    <small id="lastname-error"></small>
+  </div>
+  <div class="part-form">
+    <label for="email">Email</label>
+    <input type="text" name="email" />
+    <small id="email-error"></small>
+  </div>
+  <div class="part-form">
+    <label for="github">Github</label>
+    <input type="text" name="github" />
+    <small id="github-error"></small>
+  </div>
+  <div class="part-form">
+    <label for="password">Password</label>
+    <input type="password" name="password" />
+    <small id="password-error"></small>
+  </div>
+  <div class="part-form">
+    <label for="confirmPassword">Confirm password</label>
+    <input type="password" name="confirmPassword" />
+    <small id="confirmPassword-error"></small>
+  </div>
+  <div class="part-form">
+    <label for="cv">CV</label>
+    <input type="file" name="cv" class="file-input" />
+    <small id="cv-error"></small>
+  </div>
+  <div class="part-form">
+    <label for="profilePicture">Profile picture</label>
+    <input type="file" name="profilePicture" class="file-input" />
+    <small id="profilePicture-error"></small>
+  </div>
+
+  <div class="part-form">
+    <p>Already registered ? <a class="form-link" href="/login">Login</a></p>
+  </div>
+
+  <button class="login-register-btn-form">Submit</button>
 </form>
 
 <script>

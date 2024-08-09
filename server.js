@@ -27,6 +27,9 @@ const viewsRouter = require("./routes/viewsRoutes");
 app.use("/api/users", userRoutes);
 app.use("/api/jobs", jobRoutes);
 app.use(viewsRouter);
+app.get("/", (req, res) => {
+  res.redirect("/login");
+});
 
 app.use(errorHandler);
 

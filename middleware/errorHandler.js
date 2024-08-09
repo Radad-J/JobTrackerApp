@@ -7,6 +7,8 @@
     });
 };*/
 const errorHandler = (err) => {
+  console.log(err.message);
+
   let errors = [];
 
   // Duplicate key error (e.g., unique constraint)

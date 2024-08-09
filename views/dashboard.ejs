@@ -1,6 +1,6 @@
 <%- include("./partials/header") %>
 
-<form id="get-jobs">
+<form id="get-jobs" class="get-job-form">
   <label for="filterBy-status">Filter by</label>
   <select name="filterBySelection" id="filterBySelection">
     <option value="All">All</option>
@@ -14,22 +14,23 @@
     <option value="asc">ASC</option>
     <option value="desc">DESC</option>
   </select>
-  <button>Submit</button>
+  <button>See Jobs</button>
 </form>
 
 <div class="btn">
   <button id="add-job-btn">Add job</button>
 </div>
 
-<div class="pagination">
-  <p>
-    <span id="minus-one-page">-</span> <span id="num-page"></span>/<span
-      id="total-pages"
-    ></span>
-    <span id="plus-one-page">+</span>
-  </p>
+<div class="box-job-container">
+  <div id="box-jobs-card" class="box-jobs-card"></div>
+  <div class="pagination">
+    <p>
+      <span id="minus-one-page" class="clickable">-</span>
+      <span id="num-page"></span>/<span id="total-pages"></span>
+      <span id="plus-one-page" class="clickable">+</span>
+    </p>
+  </div>
 </div>
-<div id="box-jobs-card"></div>
 
 <script>
   const jobsBox = document.getElementById("box-jobs-card");
@@ -68,14 +69,29 @@
     // get the value of total pages for pagination
     pagesLimit = jobs.totalPages;
 
+    // display or not pagination
+    const paginationBox = document.querySelector(".pagination");
+    if (jobs.totalJobs == 0) {
+      paginationBox.style.display = "none";
+    }
+    if (jobs.totalJobs > 0) {
+      paginationBox.style.display = "block";
+    }
+
     jobsBox.innerHTML = "";
     jobs.jobs.forEach((job) => {
       const card = document.createElement("div");
+
       card.classList.add("job-card");
+
+      let date = job.createdAt.split("T")[0];
       card.innerHTML = `
+
         <h2>${job.title}</h2>
-        <p>${job.website}</p>
-        <p>${job.status}</p>
+        <p class='website'>${job.website}</p>
+        <p>${job.origin}</p>
+        <p class='date'>${date}</p>
+        <p class='status ${job.status}'>${job.status}</p>
       `;
 
       card.addEventListener("click", (e) => {

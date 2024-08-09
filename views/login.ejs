@@ -1,14 +1,21 @@
 <%- include("./partials/header") %>
 
-<form id="login-form">
-  <label for="email">email</label>
-  <input type="text" name="email" required />
-  <label for="password">password</label>
-  <input type="text" name="password" />
-  <small id="login-error-msg"></small>
-  <button>Submit</button>
+<form id="login-form" class="form">
+  <div class="part-form">
+    <label for="email">Email</label>
+    <input type="text" name="email" required />
+  </div>
+  <div class="part-form">
+    <label for="password">Password</label>
+    <input type="password" name="password" />
+    <small id="login-error-msg"></small>
+  </div>
+
+  <div class="part-form">
+    <p>Not signup yet ? <a class="form-link" href="/register">Register</a></p>
+  </div>
+  <button class="login-register-btn-form">Login</button>
 </form>
-<button id="register-btn">Register</button>
 
 <script>
   const loginForm = document.getElementById("login-form");
@@ -42,12 +49,6 @@
           errorMessage.innerText = data["errors"][0]["message"];
         }
       });
-  });
-
-  const register = document.getElementById("register-btn");
-
-  register.addEventListener("click", () => {
-    window.location.href = "/register";
   });
 </script>
 

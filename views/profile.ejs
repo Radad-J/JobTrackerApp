@@ -1,14 +1,29 @@
 <%- include("./partials/header") %>
 
-<p id="firstname"></p>
-<p id="lastname"></p>
-<p id="email"></p>
-<p id="github"></p>
-<!-- <p id="profilePicture"></p> -->
-<!-- <p id="cv"></p> -->
-<div id="downloadCV"></div>
+<div class="profile-box">
+  <div id="profile-picture-box" class="profile-picture-box"></div>
 
-<button id="update-profile-btn">Update</button>
+  <div class="info-card">
+    <div class="info-card-part">
+      <h2>Firstname :</h2>
+      <p id="firstname"></p>
+    </div>
+    <div class="info-card-part">
+      <h2>Lastname :</h2>
+      <p id="lastname"></p>
+    </div>
+    <div class="info-card-part">
+      <h2>Email :</h2>
+      <p id="email"></p>
+    </div>
+    <div class="info-card-part">
+      <h2>Github :</h2>
+      <p id="github"></p>
+    </div>
+    <div id="downloadCV" class="info-card-part"></div>
+    <button id="update-profile-btn">Update</button>
+  </div>
+</div>
 
 <script>
   const downloadCVContainer = document.getElementById("downloadCV");
@@ -27,6 +42,12 @@
       if (user.cv) {
         let urlParts = user.cv.split("/upload/");
         downloadCVContainer.innerHTML = `<a href= ${urlParts[0]}/upload/fl_attachment/${urlParts[1]} download='cv.pdf'>Download CV</a>`;
+      }
+
+      if (response.profilePicture) {
+        document.getElementById(
+          "profile-picture-box"
+        ).innerHTML += `<img src="${response.profilePicture}"> `;
       }
     }
   };

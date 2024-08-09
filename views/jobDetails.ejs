@@ -1,19 +1,49 @@
 <%- include("./partials/header") %>
 
-<p><%= job.title %></p>
-<p><%= job.website %></p>
-<p><%= job.contactName %></p>
-<p><%= job.contactEmail %></p>
-<p><%= job.contactPhone %></p>
-<p><%= job.origin %></p>
-<p><%= job.status %></p>
-<p><%= job.comments %></p>
-<p><%= job.createdAt %></p>
+<div class="info-card">
+  <div class="info-card-part">
+    <h2>Title :</h2>
+    <p><%= job.title %></p>
+  </div>
+  <div class="info-card-part">
+    <h2>Website :</h2>
+    <p><%= job.website %></p>
+  </div>
+  <div class="info-card-part">
+    <h2>Contact Name :</h2>
+    <p><%= job.contactName %></p>
+  </div>
+  <div class="info-card-part">
+    <h2>Contact Email :</h2>
+    <p><%= job.contactEmail %></p>
+  </div>
+  <div class="info-card-part">
+    <h2>Contact phone :</h2>
+    <p><%= job.contactPhone %></p>
+  </div>
+  <div class="info-card-part">
+    <h2>Origin :</h2>
+    <p><%= job.origin %></p>
+  </div>
 
-<br />
-<button id="update-job-btn">Update</button>
-<br />
-<button id="delete-job-btn">Delete</button>
+  <div class="info-card-part">
+    <h2>Status :</h2>
+    <p><%= job.status %></p>
+  </div>
+
+  <div class="info-card-part">
+    <h2>Comments :</h2>
+    <p><%= job.comments %></p>
+  </div>
+
+  <div class="info-card-part">
+    <h2>Created at :</h2>
+    <p><%= job.createdAt.toLocaleDateString() %></p>
+  </div>
+
+  <button id="update-job-btn">Update</button>
+  <button id="delete-job-btn">Delete</button>
+</div>
 
 <script>
   const updateJobBtn = document.getElementById("update-job-btn");
