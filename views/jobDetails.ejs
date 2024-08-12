@@ -1,0 +1,72 @@
+<%- include("./partials/header") %>
+
+<div class="info-card">
+  <div class="info-card-part">
+    <h2>Title :</h2>
+    <p><%= job.title %></p>
+  </div>
+  <div class="info-card-part">
+    <h2>Website :</h2>
+    <p><%= job.website %></p>
+  </div>
+  <div class="info-card-part">
+    <h2>Contact Name :</h2>
+    <p><%= job.contactName %></p>
+  </div>
+  <div class="info-card-part">
+    <h2>Contact Email :</h2>
+    <p><%= job.contactEmail %></p>
+  </div>
+  <div class="info-card-part">
+    <h2>Contact phone :</h2>
+    <p><%= job.contactPhone %></p>
+  </div>
+  <div class="info-card-part">
+    <h2>Origin :</h2>
+    <p><%= job.origin %></p>
+  </div>
+
+  <div class="info-card-part">
+    <h2>Status :</h2>
+    <p><%= job.status %></p>
+  </div>
+
+  <div class="info-card-part">
+    <h2>Comments :</h2>
+    <p><%= job.comments %></p>
+  </div>
+
+  <div class="info-card-part">
+    <h2>Created at :</h2>
+    <p><%= job.createdAt.toLocaleDateString() %></p>
+  </div>
+
+  <button id="update-job-btn">Update</button>
+  <button id="delete-job-btn">Delete</button>
+</div>
+
+<script>
+  const updateJobBtn = document.getElementById("update-job-btn");
+
+  updateJobBtn.addEventListener("click", (e) => {
+    let jobId = window.location.href.split("/").at(-1);
+    window.location.href = `/updateJob/${jobId}`;
+  });
+
+  const deleteJobBtn = document.getElementById("delete-job-btn");
+
+  deleteJobBtn.addEventListener("click", async (e) => {
+    let jobId = window.location.href.split("/").at(-1);
+    fetch(`/api/jobs/${jobId}`, {
+      method: "DELETE",
+    })
+      .then((response) => {
+        window.location.href = "/dashboard";
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
+</script>
+
+<%- include("./partials/footer") %>

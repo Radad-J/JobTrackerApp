@@ -71,6 +71,15 @@ const registerUser = async (req, res) => {
     user.save();
 
     if (user) {
+      const token = generateToken(user._id);
+
+      // Set the token in an HTTP-only cookie only if the login is successful
+      res.cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production", // Use secure cookies in production
+        maxAge: 36000000, // 1 hour in milliseconds
+      });
+
       res.status(201).json({
         _id: user._id,
         firstname: user.firstname,
@@ -117,7 +126,7 @@ const loginUser = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production", // Use secure cookies in production
-      maxAge: 3600000, // 1 hour in milliseconds
+      maxAge: 36000000, // 1 hour in milliseconds
     });
 
     res.json({
@@ -160,31 +169,36 @@ const getProfile = async (req, res) => {
 };
 
 const updateProfile = async (req, res) => {
-  const user = await User.findById(req.user._id);
+  try {
+    const user = await User.findById(req.user._id);
 
-  if (user) {
-    user.firstname = req.body.firstname || user.firstname;
-    user.lastname = req.body.lastname || user.lastname;
-    user.email = req.body.email || user.email;
-    user.github = req.body.github || user.github;
+    if (user) {
+      user.firstname = req.body.firstname || user.firstname;
+      user.lastname = req.body.lastname || user.lastname;
+      user.email = req.body.email || user.email;
+      user.github = req.body.github || user.github;
 
-    if (req.body.password) {
-      user.password = req.body.password;
+      if (req.body.password) {
+        user.password = req.body.password;
+      }
+
+      const updatedUser = await user.save();
+
+      res.json({
+        _id: updatedUser._id,
+        firstname: updatedUser.firstname,
+        lastname: updatedUser.lastname,
+        email: updatedUser.email,
+        github: updatedUser.github,
+      });
+    } else {
+      res
+        .status(404)
+        .json({ errors: [{ path: "general", message: "User not found" }] });
     }
-
-    const updatedUser = await user.save();
-
-    res.json({
-      _id: updatedUser._id,
-      firstname: updatedUser.firstname,
-      lastname: updatedUser.lastname,
-      email: updatedUser.email,
-      github: updatedUser.github,
-    });
-  } else {
-    res
-      .status(404)
-      .json({ errors: [{ path: "general", message: "User not found" }] });
+  } catch (err) {
+    const errors = errorHandler(err);
+    res.status(400).json({ errors });
   }
 };
 
@@ -220,9 +234,59 @@ const updateCv = async (req, res) => {
         );
         res.status(200).json(updatedUserCv);
       }
+      //!!! même si la request renvoie DJ une réponse, la fonction est éxécutée jusqu'à la fin
+      // et peut faire crasher l'app dans le cas où elle essaie de renvoyer une autre réponse
+    } else {
+      res.status(400).json({ ErrorFormat: "Not a file" });
+    }
+  } catch (err) {
+    console.log(err);
+    if (err.message.includes("Missing required parameter")) {
+      err = {
+        cloudinaryError: {
+          URLerror: "No file hosted here",
+        },
+      };
+    }
+    throw err;
+  }
+};
+
+const updateProfilePicture = async (req, res) => {
+  const user = await User.findById(req.user._id);
+  const url = user.profilePicture;
+  try {
+    console.log(req.files);
+  } catch (err) {
+    console.log(err);
+  }
+  //fetch the current link to find the id
+  //delete it from cloudinary
+  try {
+    if (url) {
+      const publicID = url.split("/").slice(-3).join("/").split(".")[0];
+      const result = await cloudinary.uploader.destroy(publicID);
+      console.log("Delete result:", result);
     }
 
-    res.status(400).json({ ErrorFormat: "Not a file" });
+    if (req.files) {
+      if (req.files["profilePicture"]) {
+        const resultCV = await uploadToCloudinary(
+          "auto",
+          "jobApplyTracker/profilePicture",
+          req.files["profilePicture"][0]["buffer"]
+        );
+
+        user.profilePicture = resultCV.secure_url;
+        const updatedUserprofilePicture = await User.updateOne(
+          { _id: req.user._id },
+          { $set: { profilePicture: user.profilePicture } }
+        );
+        res.status(200).json(updatedUserprofilePicture);
+      }
+    } else {
+      res.status(400).json({ ErrorFormat: "Not a file" });
+    }
   } catch (err) {
     console.log(err);
     if (err.message.includes("Missing required parameter")) {
@@ -239,15 +303,20 @@ const updateCv = async (req, res) => {
 const changePassword = async (req, res) => {
   const user = await User.findById(req.user._id);
 
-  if (req.body.password === req.body.confPassword) {
-    user.password = req.body.password;
+  try {
+    if (req.body.password === req.body.confPassword) {
+      user.password = req.body.password;
 
-    const newPass = await user.save();
-    res.status(200).json({ password: { message: "Password changed" } });
-  } else {
-    res.status(400).json({
-      errors: [{ path: "general", message: "Password doesn't match" }],
-    });
+      const newPass = await user.save();
+      res.status(200).json({ password: { message: "Password changed" } });
+    } else {
+      res.status(400).json({
+        errors: [{ path: "general", message: "Password doesn't match" }],
+      });
+    }
+  } catch (err) {
+    const errors = errorHandler(err);
+    res.status(400).json({ errors });
   }
 };
 
@@ -258,5 +327,6 @@ module.exports = {
   getProfile,
   updateProfile,
   updateCv,
+  updateProfilePicture,
   changePassword,
 };

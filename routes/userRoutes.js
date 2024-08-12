@@ -6,6 +6,7 @@ const {
   getProfile,
   updateProfile,
   updateCv,
+  updateProfilePicture,
   changePassword,
 } = require("../controllers/userController");
 
@@ -21,5 +22,11 @@ router.post("/logout", protect, logoutUser);
 router.put("/changePassword", protect, changePassword);
 
 router.put("/updateCv", protect, uploadFields, updateCv);
+router.put(
+  "/updateProfilePicture",
+  protect,
+  uploadFields,
+  updateProfilePicture
+);
 
 module.exports = router;

@@ -1,0 +1,190 @@
+<%- include("./partials/header") %>
+
+<div class="update-profile-box">
+  <form id="update-info-profile" class="form">
+    <div class="part-form">
+      <label for="firstname">Firstname</label>
+      <input type="text" name="firstname" id="firstname" />
+      <small id="firstname-error"></small>
+    </div>
+    <div class="part-form">
+      <label for="lastname">Lastname</label>
+      <input type="text" name="lastname" id="lastname" />
+      <small id="lastname-error"></small>
+    </div>
+    <div class="part-form">
+      <label for="email">Email</label>
+      <input type="text" name="email" id="email" />
+      <small id="email-error"></small>
+    </div>
+    <div class="part-form">
+      <label for="github">Github</label>
+      <input type="text" name="github" id="github" />
+      <small id="github-error"></small>
+    </div>
+
+    <button>Submit</button>
+  </form>
+
+  <div class="second-box">
+    <form id="change-password-form" class="form">
+      <div class="part-form">
+        <label for="password">Password</label>
+        <input type="password" name="password" value="" />
+      </div>
+      <div class="part-form">
+        <label for="confPassword">Confirm password</label>
+        <input type="password" name="confPassword" value="" />
+        <small id="password-message"></small>
+      </div>
+      <button>Submit</button>
+    </form>
+
+    <form id="update-new-cv-form" class="form-update-file">
+      <label for="cv">CV</label>
+      <input type="file" name="cv" />
+      <small id="cv-msg"></small>
+      <button>Send</button>
+    </form>
+
+    <form id="update-profile-picture-form" class="form-update-file">
+      <label for="profilePicture">Profile picture</label>
+      <input type="file" name="profilePicture" />
+      <small id="profilePicture-msg"></small>
+      <button>Send</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  const getInfoUser = async () => {
+    try {
+      const response = await fetch("/api/users/profile");
+      const user = await response.json();
+      Object.keys(user)
+        .slice(1, 5)
+        .forEach((key) => {
+          document.getElementById(key).value = user[key];
+        });
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+  getInfoUser();
+
+  const updateInfoForm = document.getElementById("update-info-profile");
+  updateInfoForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    document.querySelectorAll("small").forEach((element) => {
+      element.innerText = "";
+    });
+    try {
+      const formData = new FormData(updateInfoForm);
+      const formValues = {};
+
+      formData.forEach((value, key) => {
+        formValues[key] = value;
+      });
+
+      let result = await fetch("/api/users/profile", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formValues),
+      });
+
+      result = await result.json();
+
+      if (result._id) {
+        window.location.href = "/profile";
+      } else {
+        result["errors"].forEach((error) => {
+          document.getElementById(`${error["path"]}-error`).innerText =
+            error["message"];
+        });
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+  });
+
+  const changePasswordForm = document.getElementById("change-password-form");
+  const passwordMessage = document.getElementById("password-message");
+  changePasswordForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    passwordMessage.innerText = "";
+
+    try {
+      const formData = new FormData(changePasswordForm);
+      const formValues = {};
+
+      formData.forEach((value, key) => {
+        formValues[key] = value;
+      });
+
+      let result = await fetch("/api/users/changePassword", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formValues),
+      });
+
+      result = await result.json();
+
+      if (result["password"]) {
+        passwordMessage.innerText = result["password"]["message"];
+        changePasswordForm.reset();
+      } else {
+        passwordMessage.innerText = result["errors"][0]["message"];
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+  });
+
+  const updateCVform = document.getElementById("update-new-cv-form");
+  updateCVform.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    try {
+      const formData = new FormData(updateCVform);
+
+      const response = await fetch("/api/users/updateCv", {
+        method: "PUT",
+        body: formData,
+      });
+      const data = await response.json();
+      if (data["acknowledged"]) {
+        updateCVform.reset();
+        document.getElementById("cv-msg").innerText = "done";
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+  });
+
+  const updateProfilePictureForm = document.getElementById(
+    "update-profile-picture-form"
+  );
+  updateProfilePictureForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    try {
+      const formData = new FormData(updateProfilePictureForm);
+
+      const response = await fetch("/api/users/updateProfilePicture", {
+        method: "PUT",
+        body: formData,
+      });
+      const data = await response.json();
+      if (data["acknowledged"]) {
+        updateProfilePictureForm.reset();
+        document.getElementById("profilePicture-msg").innerText = "done";
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+  });
+</script>
+
+<%- include("./partials/footer") %>

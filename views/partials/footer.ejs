@@ -1,0 +1,25 @@
+
+
+</div>
+<footer>
+    <button id="logout-btn">Logout</button>
+</footer>
+
+<script>
+    const logoutBtn = document.getElementById("logout-btn")
+    logoutBtn.addEventListener("click", async (e) => {
+        const response = await fetch("/api/users/logout", {
+            method: "POST"
+        })
+
+        const data = await response.json()
+        if(data.message){
+            window.location.href = "/login"
+        }
+    })
+
+</script>
+
+
+</body>
+</html>

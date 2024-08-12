@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="icon" href="/img/logo.png" type="image/x-icon">
+
+  </head>
+  <body>
+    <header>
+      <div class="header-container">
+        <div class="logo">
+          <img src="/img/logo.png" />
+        </div>
+
+
+
+
+        <div class="user-profile" id="userProfile"></div>
+      </div>
+    </header>
+
+    <div class="content">
+
+    <script>
+      const usernameBox = document.getElementById("userProfile");
+      const logoBox = document.querySelector(".logo")
+
+      const getUser = async () => {
+        let response = await fetch("/api/users/profile");
+        response = await response.json();
+        if (response._id) {
+          usernameBox.style.display = "flex"
+          usernameBox.innerHTML += `<p>${response.firstname} ${response.lastname}</p>`;
+        }
+        if (response.profilePicture) {
+          usernameBox.innerHTML += `<div class="profilePictureBox"><img src="${response.profilePicture}"></div> `;
+        }else {
+          usernameBox.style.display = "none"
+        }
+      };
+      getUser();
+
+      let url = window.location.href.split("/").at(-1);
+
+
+      logoBox.addEventListener("click", (e) => {
+        window.location.href = "/dashboard";
+      });
+
+      usernameBox.addEventListener("click", (e) => {
+        window.location.href = "/profile";
+      });
+    </script>
+  </body>
+</html>
