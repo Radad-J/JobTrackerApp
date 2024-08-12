@@ -16,9 +16,17 @@ header {
     .logo {
       max-width: 125px;
       cursor: pointer;
+      @include transition;
+      &:hover {
+        filter: brightness(1.2);
+      }
     }
 
     .user-profile {
+      @include transition;
+      &:hover {
+        filter: brightness(1.4);
+      }
       position: absolute;
       right: 15px;
 

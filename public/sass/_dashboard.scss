@@ -64,6 +64,11 @@
     gap: 30px;
 
     .job-card {
+      @include transition($time: 0.2s);
+      &:hover {
+        transform: translate(-5px, -5px);
+      }
+
       position: relative;
       border: 2px solid $forest-green;
       min-width: 200px;

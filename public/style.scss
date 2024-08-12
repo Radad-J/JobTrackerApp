@@ -41,3 +41,11 @@ body {
   flex-shrink: 0;
   flex-grow: 0;
 }
+
+button,
+a {
+  @include transition($time: 0.3s);
+  &:hover {
+    filter: brightness(1.2);
+  }
+}
