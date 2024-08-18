@@ -2,7 +2,7 @@
 
 ## Description
 
-_Dans le cadre de notre formation chez BeCode, nous avons développé cette application full-stack en seulement deux semaines. Ce projet a été réalisé en binôme, avec une rotation des rôles : pour la première itération, l'un de nous se chargeait du backend tandis que l'autre s'occupait du frontend, puis nous avons échangé les rôles pour la deuxième itération. Dans ce cas-ci le backend a été réalisé par_ @Radad-J _tandis que le frontend a été pris en charge par_ @AralachDeRiv
+_Dans le cadre de notre formation chez BeCode, nous avons développé cette application full-stack en seulement deux semaines. Ce projet a été réalisé en binôme, avec une rotation des rôles : pour la première itération, l'un de nous se chargeait du backend tandis que l'autre s'occupait du frontend, puis nous avons échangé les rôles pour la deuxième itération. Dans ce cas-ci le backend a été réalisé par_ [@Radad-J](https://github.com/Radad-J) _tandis que le frontend a été pris en charge par_ [@AralachDeRiv](https://github.com/AralachDeRiv)
 
 ## Fonctionnalités
 
@@ -22,4 +22,6 @@ _Dans le cadre de notre formation chez BeCode, nous avons développé cette appl
 ## Déploiement
 
 _Le projet est déployé à l'adresse suivante :_  
-[**https://jobtrackerapp-1.onrender.com/**](https://jobtrackerapp-1.onrender.com/)
+[https://jobtrackerapp-1.onrender.com/](https://jobtrackerapp-1.onrender.com/)
+
+_Note : Ce projet est hébergé sur Render. Si le serveur est en mode veille, l'application peut prendre quelques minutes à s'afficher lors du premier accès._
