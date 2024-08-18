@@ -47,7 +47,11 @@
 
 
       logoBox.addEventListener("click", (e) => {
-        window.location.href = "/dashboard";
+        let url = window.location.href.split("/").at(-1)
+       
+        if(url !== "login" && url !== "register"){
+          window.location.href = "/dashboard"
+        }
       });
 
       usernameBox.addEventListener("click", (e) => {
