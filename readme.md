@@ -7,7 +7,6 @@ _Dans le cadre de notre formation chez BeCode, nous avons développé cette appl
 ## Fonctionnalités
 
 - Suivi des candidatures d'emploi.
-- Gestion des entretiens et des suivis.
 - Authentification sécurisée avec JWT.
 - Hash des mots de passe avec `bcryptjs`.
 - Interface utilisateur simple et réactive grâce à `Ejs` et `Sass`.
@@ -22,6 +21,6 @@ _Dans le cadre de notre formation chez BeCode, nous avons développé cette appl
 ## Déploiement
 
 _Le projet est déployé à l'adresse suivante :_  
-[https://jobtrackerapp-1.onrender.com/](https://jobtrackerapp-1.onrender.com/)
+[https://jobtrackerapp-4jrj.onrender.com](https://jobtrackerapp-4jrj.onrender.com)
 
 _Note : Ce projet est hébergé sur Render. Si le serveur est en mode veille, l'application peut prendre quelques minutes à s'afficher lors du premier accès._
